@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>メモアプリ</title>
+    <link href="/reset.css" type="text/css" rel="stylesheet">
+    <link href="/layout.css" type="text/css" rel="stylesheet">
+  </head>
+  <body>
+    <article>
+      <header>
+        <h1><a href="/">メモアプリ</a></h1>
+        <form action="/memos" method="get">
+          <input type="submit" value="追加">
+        </form>
+      </header>
+      <%= yield %>
+    </article>
+  </body>
+</html>

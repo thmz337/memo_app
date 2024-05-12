@@ -1,0 +1,15 @@
+<section>
+  <p class="title"><%= h(@memo[:title]) %></p>
+  <p class="content"><%= h(@memo[:content]) %></p>
+
+  <div class="button-container">
+    <form action="<%= h("/memos/#{@memo[:id]}") %>" method="post">
+      <input type="hidden" name="_method" value="delete">
+      <input type="submit" value="削除">
+    </form>
+
+    <form action="<%= h("/memos/#{@memo[:id]}/content") %>" method="get">
+      <input type="submit" value="変更">
+    </form>
+  </div>
+</section>
