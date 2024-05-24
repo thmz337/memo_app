@@ -1,10 +1,25 @@
 # MemoApp
 
-## rubyのバージョン（rubyはすでにインストールされているものと仮定します）
+## rubyのバージョン（すでにインストールされているものと仮定します）
 
-ruby 3.3.0 (2023-12-25 revision 5124f9ac75)
+3.3.0 (2023-12-25 revision 5124f9ac75)
 
-## developmentモードでのアプリケーションの起動
+## PostgreSQLのバージョン（すでにインストールされているものと仮定します）
+
+16.3
+
+## DBとテーブルの作成
+
+```console
+$ pwd
+path/to/memo_app
+$ psql -U #{username} -d postgres -f sql/make_db.sql
+$ psql -U #{username} -d memo_app -f sql/make_table.sql
+```
+
+## アプリケーションの起動
+
+### developmentモードでのアプリケーションの起動
 
 1. リポジトリのクローン
 
@@ -28,10 +43,10 @@ $ bundle exec rackup -p 4567
 4. ブラウザで以下のURLを入力
 
 ```
-http://localhost:9292/
+http://localhost:4567/
 ```
 
-## productionモードでの起動
+### productionモードでの起動
 
 1. リポジトリのクローン
 
@@ -56,5 +71,5 @@ $ bundle exec rackup -p 4567 -E production
 4. ブラウザで以下のURLを入力
 
 ```
-http://localhost:9292/
+http://localhost:4567/
 ```

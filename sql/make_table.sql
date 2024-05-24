@@ -1,0 +1,5 @@
+CREATE TABLE memos (
+       id      INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+       title   VARCHAR(30) NOT NULL,
+       content VARCHAR(200)
+);

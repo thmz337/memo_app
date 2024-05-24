@@ -14,11 +14,11 @@ end
 
 class MemoApp < Sinatra::Application
   configure do
-    set :db, DB.new('memos.json')
+    set :memo, Memo.new('memo_app')
   end
 
   get '/' do
-    @memos = settings.db.read[:memos]
+    @memos = settings.memo.read
     erb :index, layout: :top_layout
   end
 
@@ -27,37 +27,31 @@ class MemoApp < Sinatra::Application
   end
 
   post '/memos' do
-    @id = settings.db.read[:nextID].to_i
-    @title = params[:title]
-    @content = params[:content]
-    memo = { id: @id, title: @title, content: @content }
-    settings.db.create(memo)
+    params in { title:, content: }
+    settings.memo.create(title, content)
     redirect '/'
   end
 
   get '/memos/:id' do
-    @memo = settings.db.read[:memos].find { |m| m[:id] == params[:id].to_i }
+    @memo = settings.memo.find_by_id(params[:id])[0]
     pass if @memo.nil?
     erb :memo
   end
 
-  delete '/memos/:id' do
-    settings.db.delete(params[:id].to_i)
-    redirect '/'
-  end
-
   get '/memos/:id/edit' do
-    @memo = settings.db.read[:memos].find { |m| m[:id] == params[:id].to_i }
+    @memo = settings.memo.find_by_id(params[:id])[0]
     erb :edit_memo
   end
 
   patch '/memos/:id' do
-    @id = params[:id].to_i
-    @title = params[:title]
-    @content = params[:content]
-    memo = { id: @id, title: @title, content: @content }
-    settings.db.update(memo)
-    redirect "/memos/#{params[:id]}"
+    params in { id:, title:, content: }
+    settings.memo.update(id, title, content)
+    redirect "/memos/#{id}"
+  end
+
+  delete '/memos/:id' do
+    settings.memo.delete(params[:id])
+    redirect '/'
   end
 
   not_found do
