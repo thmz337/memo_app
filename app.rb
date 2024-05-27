@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 require 'sinatra'
-require 'json'
 require 'rack'
 
-require_relative 'db'
+require_relative 'memos'
 
 helpers do
   def h(text)
@@ -14,11 +13,11 @@ end
 
 class MemoApp < Sinatra::Application
   configure do
-    set :memo, Memo.new('memo_app')
+    set :memos, Memos.new('memo_app')
   end
 
   get '/' do
-    @memos = settings.memo.read
+    @memos = settings.memos.all
     erb :index, layout: :top_layout
   end
 
@@ -28,29 +27,29 @@ class MemoApp < Sinatra::Application
 
   post '/memos' do
     params in { title:, content: }
-    settings.memo.create(title, content)
+    settings.memos.create(title, content)
     redirect '/'
   end
 
   get '/memos/:id' do
-    @memo = settings.memo.find_by_id(params[:id])[0]
+    @memo = settings.memos.find_by_id(params[:id])
     pass if @memo.nil?
     erb :memo
   end
 
   get '/memos/:id/edit' do
-    @memo = settings.memo.find_by_id(params[:id])[0]
+    @memo = settings.memos.find_by_id(params[:id])
     erb :edit_memo
   end
 
   patch '/memos/:id' do
     params in { id:, title:, content: }
-    settings.memo.update(id, title, content)
+    settings.memos.update(id, title, content)
     redirect "/memos/#{id}"
   end
 
   delete '/memos/:id' do
-    settings.memo.delete(params[:id])
+    settings.memos.delete(params[:id])
     redirect '/'
   end
 

@@ -2,17 +2,17 @@
 
 require 'pg'
 
-class Memo
+class Memos
   def initialize(db_name)
     @conn = PG.connect(dbname: db_name)
   end
 
-  def read
+  def all
     @conn.exec('SELECT * FROM memos')
   end
 
   def find_by_id(id)
-    @conn.exec('SELECT * FROM memos WHERE id = $1;', [id])
+    @conn.exec('SELECT * FROM memos WHERE id = $1;', [id])[0]
   end
 
   def create(title, content)
